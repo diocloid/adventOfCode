@@ -26,14 +26,15 @@ def main(args):
     
     print(f'Initial state: {school}')
     for i in range(0, days):
-        
+        younglings = []
         for index, item in enumerate(school):
             if(school[index] == 0):
                 school[index] = 6
-                school.append(9)
+                younglings.append(8)
             else:
                 school[index] = school[index] - 1
-        print(f'After {i} days: {len(school)}')
+        school += younglings
+        print(f'After {i+1} days: {len(school)}')
 
 
     print(f'result {len(school)}')
