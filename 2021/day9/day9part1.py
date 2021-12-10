@@ -35,7 +35,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='AdventOfCode2021Day5')
+        description='AdventOfCode2021Day9')
     parser.add_argument('--input', type=str, required=True,
                     help="File")
     args = parser.parse_args()
