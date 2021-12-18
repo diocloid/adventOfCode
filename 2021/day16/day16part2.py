@@ -46,90 +46,84 @@ def calculate(packettype, input):
     return result
 
 def readliteralvalue(transmission):
-    value = []
+    values = ''
     while True:
         endbit = transmission.read(1)
-        value.append(int(transmission.read(4), 2))
-        
+        values += transmission.read(4)
+        print(int(values, 2))
         if (endbit == '0'):
             break
-    return value
-    
+
+    return int(values, 2)
+
+
 def readpacketsbylength(transmission, length, outerpackettype):
+    print(f'length in bytes {length}')
     values = []
     pointer = transmission.tell()
-    while True:
+    while transmission.tell() - pointer < length:
+
         packetversion = int(transmission.read(3), 2)
-        print(f'versionnumber {packetversion}')
-        packettype = int(transmission.read(3), 2)
+        packettypebin = transmission.read(3)
+        packettype = int(packettypebin, 2)
         print(f'packettype {packettype}')
         if(packettype == 4):
-            print('literal value')
-            values.append(readliteralvalue(transmission)[0])                
+            values.append(readliteralvalue(transmission))                
 
         else:
-            print('operator')
             lengthtypebit = transmission.read(1)
             if(lengthtypebit == '0'):
-                length = transmission.read(15)
-                length = int(length, 2)
-                values.append(readpacketsbylength(transmission, length, packettype))
+                newlength = transmission.read(15)
+                newlength = int(newlength, 2)
+                values.append(readpacketsbylength(transmission, newlength, packettype))
             if(lengthtypebit == '1'):
-                numberofpackes = transmission.read(11)
-                numberofpackes = int(numberofpackes, 2)
-                values.append( readpacketsbynumbers(transmission, numberofpackes, packettype))
+                newnumberofpackes = transmission.read(11)
+                newnumberofpackes = int(newnumberofpackes, 2)
+                values.append(readpacketsbynumbers(transmission, newnumberofpackes, packettype))
              
-        if(transmission.tell() - pointer == length):
-            break
+        
 
     value = calculate(outerpackettype, values)
     return value
 
 def readpacketsbynumbers(transmission, numberofpackes, outerpackettype):
+    print(f'length in numbers {numberofpackes}')
     values = []
     counter = 0
-    while True:
+    while counter < numberofpackes:
         packetversion = int(transmission.read(3), 2)
-        packettype = int(transmission.read(3), 2)
+        packettypebin = transmission.read(3)
+        packettype = int(packettypebin, 2)
         print(f'packettype {packettype}')
         if(packettype == 4):
-            print('literal value')
-            values.append(readliteralvalue(transmission)[0])                
+            values.append(readliteralvalue(transmission))                
 
         else:
-            print('operator')
             lengthtypebit = transmission.read(1)
             if(lengthtypebit == '0'):
-                length = transmission.read(15)
-                length = int(length, 2)
-                values.append(readpacketsbylength(transmission, length, packettype))
+                newlength = transmission.read(15)
+                newlength = int(newlength, 2)
+                values.append(readpacketsbylength(transmission, newlength, packettype))
             if(lengthtypebit == '1'):
-                numberofpackes = transmission.read(11)
-                numberofpackes = int(numberofpackes, 2)
-                values.append(readpacketsbynumbers(transmission, numberofpackes, packettype))
+                newnumberofpackes = transmission.read(11)
+                newnumberofpackes = int(newnumberofpackes, 2)
+                values.append( readpacketsbynumbers(transmission, newnumberofpackes, packettype))
         counter += 1
-
-        if(counter == numberofpackes):
-            break
 
     value = calculate(outerpackettype, values)
     return value
 
     
 def decodetransmission(transmission):
-
     
     packetversion = int(transmission.read(3), 2)
     packettype = int(transmission.read(3), 2)
     print(f'packettype {packettype}')
 
     if(packettype == 4):
-        print('literal value')
-        value = readliteralvalue(transmission)     
-             
+        value = readliteralvalue(transmission) 
 
     else:
-        print('operator')
         lengthtypebit = transmission.read(1)
         if(lengthtypebit == '0'):
             length = transmission.read(15)
@@ -139,8 +133,6 @@ def decodetransmission(transmission):
             numberofpackes = transmission.read(11)
             numberofpackes = int(numberofpackes, 2)
             value = readpacketsbynumbers(transmission, numberofpackes, packettype)
-
-
 
         # point = transmission.tell()
         # transmission.seek(0, os.SEEK_END)        
