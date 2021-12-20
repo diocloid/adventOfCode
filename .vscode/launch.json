@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "args": ["--input=2021/day6/test"],
+            "args": ["--input=2021/day19/test"],
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
