@@ -2,13 +2,8 @@ import argparse
 import numpy as np
 from collections import defaultdict
 
-dicerolls = []
-for x in range(1,4):
-    for y in range(1,4):
-        for z in range(1,4):
-            dicerolls.append(x+y+z)
 
-def play(universecounter):
+def play(universecounter, dicerolls):
     newuniversecounter = defaultdict(int)
     player1winstemp = 0
     player2winstemp = 0
@@ -62,7 +57,12 @@ def play(universecounter):
         
 
 def main(args):
-    answer = 0
+    dicerolls = []
+    for x in range(1,4):
+        for y in range(1,4):
+            for z in range(1,4):
+                dicerolls.append(x+y+z)
+
     ticktock = 0
     player1score = 0
     player2score = 0
@@ -74,7 +74,7 @@ def main(args):
     universecounter[player1score, player2score, player1space, player2space, ticktock] = 1
     
     while universecounter:
-        universecounter, player1winstemp, player2winstemp = play(universecounter)
+        universecounter, player1winstemp, player2winstemp = play(universecounter, dicerolls)
         player1winsacrossuniverses += player1winstemp
         player2winsacrossuniverses += player2winstemp
 

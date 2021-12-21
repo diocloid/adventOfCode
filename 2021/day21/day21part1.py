@@ -3,8 +3,6 @@ import numpy as np
 import os
 import re
 import math
-from utils.all import *
-
 
 def main(args):
     diestate = 1 
