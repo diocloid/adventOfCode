@@ -13,7 +13,7 @@ def readfile(filename):
             break
         
         values = line.strip().split(" ")
-        
+        #Part 1 
         # if values[0] == "A" and values[1] == "X":
         #     result = result + 1 + 3
         # elif values[0] == "A" and values[1] == "Y":
@@ -32,6 +32,7 @@ def readfile(filename):
         #     result = result + 2 + 0
         # elif values[0] == "C" and values[1] == "Z":
         #     result = result + 3 + 3
+        #Part2
         if values[1] == "X" and values[0] == "A":
             result = result + 3 + 0
         elif values[1] == "X" and values[0] == "B":
