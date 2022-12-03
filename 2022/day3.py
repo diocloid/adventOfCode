@@ -38,9 +38,7 @@ def part2(filename):
     file1 = open(os.path.join(sys.path[0], "data", filename), 'r')
         
     while True:
-        line1 = file1.readline().strip()
-        
-        
+        line1 = file1.readline().strip()        
         if not line1:
             break
         
@@ -61,9 +59,11 @@ def part2(filename):
                 elif line3[element].islower():
                     result += ord(line3[element])-96
                     break
-    
+                
     file1.close()
     print(result)
+    
+    
 if __name__ == '__main__':
     part1('day3.txt')
     part2('day3.txt')
